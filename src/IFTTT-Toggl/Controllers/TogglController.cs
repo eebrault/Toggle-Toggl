@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Net;
 using Microsoft.AspNet.Mvc;
 using Microsoft.Extensions.Logging;
 using Toggl;
@@ -40,15 +41,26 @@ namespace IFTTT_Toggl.Controllers
 
 	    // POST api/toggl/start
 		[HttpPost("start")]
-        public void Start([FromBody]string value)
+        public JsonResult Start([FromBody]string value)
 		{
-			// Start a new time entry
-			TimeEntryService.Start(new TimeEntry()
+			try
 			{
-				Description = "IFTTT",
-				CreatedWith = "IFTTT Channel",
-				WorkspaceId = DefaultWorkspacedId
-			});
+				// Start a new time entry
+				var runningTimeentry = TimeEntryService.Start(new TimeEntry()
+				{
+					Description = "IFTTT",
+					CreatedWith = "IFTTT Channel",
+					WorkspaceId = DefaultWorkspacedId
+				});
+
+				return Json(runningTimeentry);
+			}
+			catch (Exception ex)
+			{
+				Logger.LogError("Failed to start new time entry", ex);
+				Response.StatusCode = (int)HttpStatusCode.BadRequest;
+				return Json(new { Message = ex.Message });
+			}
 		}
 
         [HttpPost]
