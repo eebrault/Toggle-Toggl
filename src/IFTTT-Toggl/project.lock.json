@@ -1559,17 +1559,9 @@
           "lib/net45/_._": {}
         }
       },
-      "TogglAPI.Net/0.2.0": {
-        "type": "package",
-        "dependencies": {
-          "Newtonsoft.Json": "4.0.8"
-        },
-        "compile": {
-          "lib/net45/Toggl.dll": {}
-        },
-        "runtime": {
-          "lib/net45/Toggl.dll": {}
-        }
+      "Toggl/1.0.0": {
+        "type": "project",
+        "framework": "DNX,Version=v4.5.1"
       }
     },
     "DNX,Version=v4.5.1/win7-x86": {
@@ -3132,17 +3124,9 @@
           "lib/net45/_._": {}
         }
       },
-      "TogglAPI.Net/0.2.0": {
-        "type": "package",
-        "dependencies": {
-          "Newtonsoft.Json": "4.0.8"
-        },
-        "compile": {
-          "lib/net45/Toggl.dll": {}
-        },
-        "runtime": {
-          "lib/net45/Toggl.dll": {}
-        }
+      "Toggl/1.0.0": {
+        "type": "project",
+        "framework": "DNX,Version=v4.5.1"
       }
     },
     "DNX,Version=v4.5.1/win7-x64": {
@@ -4705,21 +4689,17 @@
           "lib/net45/_._": {}
         }
       },
-      "TogglAPI.Net/0.2.0": {
-        "type": "package",
-        "dependencies": {
-          "Newtonsoft.Json": "4.0.8"
-        },
-        "compile": {
-          "lib/net45/Toggl.dll": {}
-        },
-        "runtime": {
-          "lib/net45/Toggl.dll": {}
-        }
+      "Toggl/1.0.0": {
+        "type": "project",
+        "framework": "DNX,Version=v4.5.1"
       }
     }
   },
   "libraries": {
+    "Toggl/1.0.0": {
+      "type": "project",
+      "path": "../../wrap/Toggl/project.json"
+    },
     "Microsoft.AspNet.Antiforgery/1.0.0-rc1-final": {
       "type": "package",
       "serviceable": true,
@@ -6561,24 +6541,6 @@
         "System.Threading.4.0.0.nupkg.sha512",
         "System.Threading.nuspec"
       ]
-    },
-    "TogglAPI.Net/0.2.0": {
-      "type": "package",
-      "sha512": "qZDlS880GRonbUSr5Io/Rb2ui4hQQbIyUDFMo1qpNK+3KNz1bwjPZkD2K9hGBHTmoWOARn3pp55QwvmEz+i/9w==",
-      "files": [
-        "lib/net40/Toggl.dll",
-        "lib/net45/Toggl.dll",
-        "Newtonsoft.Json.dll",
-        "Newtonsoft.Json.pdb",
-        "Newtonsoft.Json.xml",
-        "Toggl.dll",
-        "Toggl.dll.config",
-        "Toggl.pdb",
-        "Toggl.XML",
-        "TogglAPI.Net.0.2.0.nupkg",
-        "TogglAPI.Net.0.2.0.nupkg.sha512",
-        "TogglAPI.Net.nuspec"
-      ]
     }
   },
   "projectFileDependencyGroups": {
@@ -6591,9 +6553,10 @@
       "Microsoft.Extensions.Configuration.Json >= 1.0.0-rc1-final",
       "Microsoft.Extensions.Logging >= 1.0.0-rc1-final",
       "Microsoft.Extensions.Logging.Console >= 1.0.0-rc1-final",
-      "Microsoft.Extensions.Logging.Debug >= 1.0.0-rc1-final",
-      "TogglAPI.Net >= 0.2.0"
+      "Microsoft.Extensions.Logging.Debug >= 1.0.0-rc1-final"
     ],
-    "DNX,Version=v4.5.1": []
+    "DNX,Version=v4.5.1": [
+      "Toggl >= 1.0.0-*"
+    ]
   }
 }
