@@ -75,6 +75,7 @@ namespace IFTTT_Toggl.Controllers
 				}
 
 				Logger.LogError("Unable to find a running time entry.");
+				Response.StatusCode = (int)HttpStatusCode.BadRequest;
 				return Json(new {Message = "Unable to find a running time entry."});
 			}
 			catch (Exception ex)
