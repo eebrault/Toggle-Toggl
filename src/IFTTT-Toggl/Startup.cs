@@ -15,13 +15,13 @@ namespace IFTTT_Toggl
             // Set up configuration sources.
             var builder = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json")
+				.AddJsonFile("config.json")
+				.AddJsonFile($"config.{env.EnvironmentName}.json")
                 .AddEnvironmentVariables();
             Configuration = builder.Build();
         }
 
-	    // ReSharper disable once MemberCanBePrivate.Global
-	    // ReSharper disable once AutoPropertyCanBeMadeGetOnly.Global
-        public IConfigurationRoot Configuration { get; set; }
+        public static IConfigurationRoot Configuration { get; set; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
 	    // ReSharper disable once UnusedMember.Global
@@ -29,6 +29,9 @@ namespace IFTTT_Toggl
         {
             // Add framework services.
             services.AddMvc();
+
+			// Add logging
+	        services.AddLogging();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
