@@ -62,13 +62,26 @@ namespace IFTTT_Toggl.Controllers
 		}
 
 		[HttpPost("stop")]
-		public void Stop([FromBody]string value)
+		public JsonResult Stop([FromBody]string value)
 		{
-			// Get running time entry
-			var runningTimeEntry = TimeEntryService.Current();
-			if (runningTimeEntry.Id != null)
+			try
 			{
-				var stoppedTimeEntry = TimeEntryService.Stop(runningTimeEntry);
+				// Get running time entry
+				var runningTimeEntry = TimeEntryService.Current();
+				if (runningTimeEntry.Id != null)
+				{
+					var stoppedTimeEntry = TimeEntryService.Stop(runningTimeEntry);
+					return Json(stoppedTimeEntry);
+				}
+
+				Logger.LogError("Unable to find a running time entry.");
+				return Json(new {Message = "Unable to find a running time entry."});
+			}
+			catch (Exception ex)
+			{
+				Logger.LogError("Failed to stop time entry", ex);
+				Response.StatusCode = (int)HttpStatusCode.BadRequest;
+				return Json(new { ex.Message });
 			}
 		}
 	}
