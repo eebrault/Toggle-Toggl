@@ -53,3 +53,4 @@ _ReSharper*/
 
 # config.debug.json
 config.Development.json
+config.Production.json
