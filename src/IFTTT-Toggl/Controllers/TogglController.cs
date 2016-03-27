@@ -4,8 +4,6 @@ using System.Net;
 using Microsoft.AspNet.Mvc;
 using Microsoft.Extensions.Logging;
 using Toggl;
-using Toggl.Extensions;
-using Toggl.QueryObjects;
 using Toggl.Services;
 
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
@@ -15,11 +13,11 @@ namespace IFTTT_Toggl.Controllers
     [Route("api/[controller]")]
     public class TogglController : Controller
     {
-	    private string TogglApiKey { get; set; }
+	    private string TogglApiKey { get; }
 
-	    private ILogger<TogglController> Logger { get; set; }
+	    private ILogger<TogglController> Logger { get; }
 
-	    private TimeEntryService TimeEntryService { get; set; }
+	    private TimeEntryService TimeEntryService { get; }
 
 	    public TogglController(ILogger<TogglController> logger)
 		{
@@ -59,7 +57,7 @@ namespace IFTTT_Toggl.Controllers
 			{
 				Logger.LogError("Failed to start new time entry", ex);
 				Response.StatusCode = (int)HttpStatusCode.BadRequest;
-				return Json(new { Message = ex.Message });
+				return Json(new {ex.Message });
 			}
 		}
 
