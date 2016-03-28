@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Linq;
 using System.Net;
-using System.Runtime.InteropServices;
-using System.Security.AccessControl;
 using IFTTT_Toggl.ViewModels;
 using Microsoft.AspNet.Mvc;
 using Microsoft.Extensions.Logging;
@@ -24,18 +22,7 @@ namespace IFTTT_Toggl.Controllers
 
 		private int DefaultWorkspacedId { get; set; }
 
-		private TimeEntryService TimeEntryService
-		{
-			get
-			{
-				if (_timeEntryService == null)
-				{
-					_timeEntryService = new TimeEntryService(TogglApiKey);
-				}
-
-				return _timeEntryService;
-			}
-		}
+		private TimeEntryService TimeEntryService => _timeEntryService ?? (_timeEntryService = new TimeEntryService(TogglApiKey));
 
 		public TogglController(ILogger<TogglController> logger)
 		{
