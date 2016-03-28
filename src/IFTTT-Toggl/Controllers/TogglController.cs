@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Linq;
 using System.Net;
+using System.Runtime.InteropServices;
+using System.Security.AccessControl;
+using IFTTT_Toggl.ViewModels;
 using Microsoft.AspNet.Mvc;
 using Microsoft.Extensions.Logging;
 using Toggl;
@@ -13,19 +16,30 @@ namespace IFTTT_Toggl.Controllers
 	[Route("api/[controller]")]
 	public class TogglController : Controller
 	{
-		private string TogglApiKey { get; }
+		private TimeEntryService _timeEntryService;
 
 		private ILogger<TogglController> Logger { get; }
 
-		private TimeEntryService TimeEntryService { get; }
+		private string TogglApiKey { get; set; }
+
+		private int DefaultWorkspacedId { get; set; }
+
+		private TimeEntryService TimeEntryService
+		{
+			get
+			{
+				if (_timeEntryService == null)
+				{
+					_timeEntryService = new TimeEntryService(TogglApiKey);
+				}
+
+				return _timeEntryService;
+			}
+		}
 
 		public TogglController(ILogger<TogglController> logger)
 		{
 			Logger = logger;
-			TogglApiKey = Startup.Configuration["AppSettings:TogglApiKey"];
-			TimeEntryService = new TimeEntryService(TogglApiKey);
-
-			SetDefaultWorkspace();
 		}
 
 		private void SetDefaultWorkspace()
@@ -35,14 +49,20 @@ namespace IFTTT_Toggl.Controllers
 			if (defaultWorkspace?.Id != null) DefaultWorkspacedId = (int)defaultWorkspace.Id;
 		}
 
-		private int DefaultWorkspacedId { get; set; }
+		private void InitParams(ApiKeyViewModel vm)
+		{
+			TogglApiKey = vm.TogglApiKey;
+			SetDefaultWorkspace();
+		}
 
 		// POST api/toggl/start
 		[HttpPost("start")]
-		public JsonResult Start([FromBody]string value)
+		public JsonResult Start([FromBody]ApiKeyViewModel vm)
 		{
 			try
 			{
+				InitParams(vm);
+
 				// Start a new time entry
 				var runningTimeentry = TimeEntryService.Start(new TimeEntry()
 				{
@@ -62,10 +82,11 @@ namespace IFTTT_Toggl.Controllers
 		}
 
 		[HttpPost("stop")]
-		public JsonResult Stop([FromBody]string value)
+		public JsonResult Stop([FromBody]ApiKeyViewModel vm)
 		{
 			try
 			{
+				InitParams(vm);
 				// Get running time entry
 				var runningTimeEntry = TimeEntryService.Current();
 				if (runningTimeEntry.Id != null)
